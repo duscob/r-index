@@ -191,7 +191,7 @@ public:
 	/* serialize the structure to the ostream
 	 * \param out	 the ostream
 	 */
-	ulint serialize(std::ostream& out){
+	ulint serialize(std::ostream& out) const {
 
 		ulint w_bytes = 0;
 

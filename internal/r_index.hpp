@@ -11,8 +11,8 @@
 #ifndef R_INDEX_S_H_
 #define R_INDEX_S_H_
 
-#include <definitions.hpp>
-#include <rle_string.hpp>
+#include "definitions.hpp"
+#include "rle_string.hpp"
 #include "sparse_sd_vector.hpp"
 #include "sparse_hyb_vector.hpp"
 #include "utils.hpp"
@@ -372,12 +372,14 @@ public:
 		return bwt.toString();
 	}
 
+  typedef std::size_t size_type;
+
 	/* serialize the structure to the ostream
 	 * \param out	 the ostream
 	 */
-	ulint serialize(std::ostream& out){
+	size_type serialize(std::ostream& out, sdsl::structure_tree_node *v = nullptr, const std::string &name = "") const {
 
-		ulint w_bytes = 0;
+		size_type w_bytes = 0;
 
 		assert(F.size()>0);
 		assert(bwt.size()>0);
@@ -421,7 +423,7 @@ public:
 	 * save the structure to the path specified.
 	 * \param path_prefix prefix of the index files. suffix ".ri" will be automatically added
 	 */
-	void save_to_file(string path_prefix){
+	void save_to_file(const string &path_prefix){
 
 		string path = string(path_prefix).append(".ri");
 
@@ -435,7 +437,7 @@ public:
 	 * load the structure from the path specified.
 	 * \param path: full file name
 	 */
-	void load_from_file(string path){
+	void load_from_file(const string &path){
 
 		std::ifstream in(path);
 		load(in);

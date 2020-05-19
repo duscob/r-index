@@ -297,7 +297,7 @@ public:
 
 	}
 
-	ulint size(){return n;}
+	ulint size() const {return n;}
 
 	/*
 	 * return inclusive range of j-th run in the string
@@ -338,7 +338,7 @@ public:
 	/* serialize the structure to the ostream
 	 * \param out	 the ostream
 	 */
-	ulint serialize(std::ostream& out){
+	ulint serialize(std::ostream& out) const {
 
 		ulint w_bytes = 0;
 

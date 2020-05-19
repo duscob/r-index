@@ -39,7 +39,7 @@ public:
 
 	}
 
-	ulint size(){
+	ulint size() const {
 		return wt.size();
 	}
 
@@ -62,7 +62,7 @@ public:
 	/* serialize the structure to the ostream
 	 * \param out	 the ostream
 	 */
-	ulint serialize(std::ostream& out){
+	ulint serialize(std::ostream& out) const {
 
 		return wt.serialize(out);
 
