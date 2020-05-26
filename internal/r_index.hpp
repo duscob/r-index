@@ -469,6 +469,24 @@ public:
 
 	}
 
+  size_type size_in_bytes_basic() const {
+
+    size_type w_bytes = 0;
+
+    assert(F.size()>0);
+    assert(bwt.size()>0);
+
+    w_bytes += sizeof(terminator_position) + 256*sizeof(ulint);
+
+    w_bytes += sdsl::size_in_bytes(bwt);
+
+//    w_bytes += sdsl::size_in_bytes(pred);
+//    w_bytes += sdsl::size_in_bytes(samples_last);
+//    w_bytes += sdsl::size_in_bytes(pred_to_run);
+
+    return w_bytes;
+  }
+
 private:
 
 	/*
