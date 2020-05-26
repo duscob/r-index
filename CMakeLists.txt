@@ -44,7 +44,7 @@ set(HEADER_FILES
 add_library(rindex INTERFACE)
 target_sources(rindex INTERFACE ${HEADER_FILES})
 target_include_directories(rindex INTERFACE ${PROJECT_SOURCE_DIR}/internal)
-set_target_properties(rindex PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
+#set_target_properties(rindex PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
 
 add_executable(ri-build ri-build.cpp)
 TARGET_LINK_LIBRARIES(ri-build sdsl)
