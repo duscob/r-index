@@ -335,12 +335,14 @@ public:
 
 	ulint number_of_runs(){return R;}
 
+  typedef std::size_t size_type;
+
 	/* serialize the structure to the ostream
 	 * \param out	 the ostream
 	 */
-	ulint serialize(std::ostream& out) const {
+	size_type serialize(std::ostream& out, sdsl::structure_tree_node *v = nullptr, const std::string &name = "") const {
 
-		ulint w_bytes = 0;
+		size_type w_bytes = 0;
 
 		out.write((char*)&n,sizeof(n));
 		out.write((char*)&R,sizeof(R));
