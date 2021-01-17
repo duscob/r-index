@@ -1,6 +1,8 @@
 ########################################################################
 # CMake build script for R-Index Library.
 
+option(rindex_build_benchmarks "Build all of rindex's benchmarks." ON)
+
 option(rindex_install "Enable installation of r-index. (Projects embedding r-index may want to turn this OFF.)" ON)
 
 
@@ -16,6 +18,15 @@ endif()
 
 project (s-rlbwt)
 
+# Location of internal cmake modules
+set(CMAKE_MODULE_PATH
+        ${CMAKE_MODULE_PATH}
+        ${PROJECT_SOURCE_DIR}/cmake)
+
+# Guard against in-source builds and bad build-type strings
+include(ConfigSafeGuards)
+
+
 include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/internal)
 include_directories(~/include) #SDSL headers are here
@@ -24,7 +35,7 @@ LINK_DIRECTORIES(~/lib) #SDSL lib are here
 
 message("Building in ${CMAKE_BUILD_TYPE} mode")
 
-set(CMAKE_CXX_FLAGS "--std=c++11")
+set(CMAKE_CXX_FLAGS "--std=c++14")
 
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -ggdb -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -fstrict-aliasing -DNDEBUG -march=native")
@@ -44,7 +55,7 @@ set(HEADER_FILES
 add_library(rindex INTERFACE)
 target_sources(rindex INTERFACE ${HEADER_FILES})
 target_include_directories(rindex INTERFACE ${PROJECT_SOURCE_DIR}/internal)
-#set_target_properties(rindex PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
+set_target_properties(rindex PROPERTIES PUBLIC_HEADER "${HEADER_FILES}")
 
 add_executable(ri-build ri-build.cpp)
 TARGET_LINK_LIBRARIES(ri-build sdsl)
@@ -52,6 +63,7 @@ TARGET_LINK_LIBRARIES(ri-build divsufsort)
 TARGET_LINK_LIBRARIES(ri-build divsufsort64)
 
 add_executable(ri-locate ri-locate.cpp)
+TARGET_LINK_LIBRARIES(ri-locate rindex)
 TARGET_LINK_LIBRARIES(ri-locate sdsl)
 TARGET_LINK_LIBRARIES(ri-locate divsufsort)
 TARGET_LINK_LIBRARIES(ri-locate divsufsort64)
@@ -66,6 +78,23 @@ TARGET_LINK_LIBRARIES(ri-count divsufsort64)
 #TARGET_LINK_LIBRARIES(ri-space divsufsort)
 #TARGET_LINK_LIBRARIES(ri-space divsufsort64)
 
+include(internal_utils)
+
+if (rindex_build_benchmarks)
+    include(ConfigGBenchmark)
+
+    find_library(GFLAGS_LIB gflags REQUIRED)
+    find_package(Threads)
+
+    find_library(SDSL_LIB sdsl REQUIRED)
+    find_library(DIVSUFSORT_LIB divsufsort REQUIRED)
+    find_library(DIVSUFSORT64_LIB divsufsort64 REQUIRED)
+    set(SDSL_LIBS ${SDSL_LIB} ${DIVSUFSORT_LIB} ${DIVSUFSORT64_LIB})
+    set(LIBS ${SDSL_LIBS})
+
+    #    cxx_executable_with_flags(query_doc_freq_index_bm "" "${GFLAGS_LIB};benchmark;dret;${LIBS};${GRAMMAR_LIB};${CMAKE_THREAD_LIBS_INIT}" benchmark/query_doc_freq_index_bm.cpp)
+    cxx_executable_with_flags(bm_locate "" "${GFLAGS_LIB};benchmark;${LIBS};" benchmark/bm_locate.cpp)
+endif ()
 
 ########################################################################
 #
