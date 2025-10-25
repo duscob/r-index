@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
   std::pair<ri::r_index<> *, std::size_t> index;
 
   if (!cache_file_exists(KEY_R_INDEX, config) || FLAGS_rebuild) {
-    construct_config::byte_algo_sa = FLAGS_sais ? SE_SAIS
+    construct_config().byte_algo_sa = FLAGS_sais ? SE_SAIS
                                                 : LIBDIVSUFSORT; // or LIBDIVSUFSORT for less space-efficient but faster construction
 
     string data_path = FLAGS_data_dir + "/" + FLAGS_data_name;

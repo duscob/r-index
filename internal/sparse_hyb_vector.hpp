@@ -10,6 +10,8 @@
 
 #include <vector>
 
+#include "sdsl/hyb_vector.hpp"
+
 using namespace std;
 using namespace sdsl;
 

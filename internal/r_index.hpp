@@ -584,7 +584,7 @@ private:
 
 	    store_to_cache(text, conf::KEY_TEXT, cc);
 
-	    construct_config::byte_algo_sa = sais ? SE_SAIS : LIBDIVSUFSORT;
+	    construct_config().byte_algo_sa = sais ? SE_SAIS : LIBDIVSUFSORT;
 	    construct_sa<8>(cc);
 
 	    //now build BWT from SA
