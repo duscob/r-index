@@ -6,17 +6,17 @@ option(rindex_build_benchmarks "Build all of rindex's benchmarks." ON)
 option(rindex_install "Enable installation of r-index. (Projects embedding r-index may want to turn this OFF.)" ON)
 
 
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.10)
 
 # Set a default build type if none was specified
-if(NOT CMAKE_BUILD_TYPE)
-  message(STATUS "Setting build type to 'Release' as none was specified.")
-  set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
-endif()
+if (NOT CMAKE_BUILD_TYPE)
+    message(STATUS "Setting build type to 'Release' as none was specified.")
+    set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build." FORCE)
+endif ()
 
 #set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/.. )
 
-project (s-rlbwt)
+project(s-rlbwt)
 
 # Location of internal cmake modules
 set(CMAKE_MODULE_PATH
@@ -35,7 +35,7 @@ LINK_DIRECTORIES(~/lib) #SDSL lib are here
 
 message("Building in ${CMAKE_BUILD_TYPE} mode")
 
-set(CMAKE_CXX_FLAGS "--std=c++14")
+set(CMAKE_CXX_STANDARD 17)
 
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -ggdb -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -fstrict-aliasing -DNDEBUG -march=native")
@@ -105,9 +105,9 @@ if (rindex_install)
         set(CMAKE_INSTALL_LIBDIR "lib${LIB_SUFFIX}" CACHE STRING "Object code libraries (lib)")
         set(CMAKE_INSTALL_INCLUDEDIR "include" CACHE STRING "C header files (include)")
         mark_as_advanced(CMAKE_INSTALL_BINDIR CMAKE_INSTALL_LIBDIR CMAKE_INSTALL_INCLUDEDIR)
-    else()
+    else ()
         include(GNUInstallDirs)
-    endif()
+    endif ()
 
     install(TARGETS rindex
             RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
