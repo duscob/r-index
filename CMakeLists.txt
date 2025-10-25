@@ -83,7 +83,12 @@ include(internal_utils)
 if (rindex_build_benchmarks)
     include(ConfigGBenchmark)
 
-    find_library(GFLAGS_LIB gflags REQUIRED)
+    # TODO use find_package(gflags) instead find_library(...)
+    find_library(GFLAGS_LIB gflags)
+    if (NOT GFLAGS_LIB)
+        include(ConfigGFlags)
+        set(GFLAGS_LIB gflags::gflags)
+    endif ()
     find_package(Threads)
 
     find_library(SDSL_LIB sdsl REQUIRED)
